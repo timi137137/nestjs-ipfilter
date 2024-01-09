@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
+import {IPVersion} from "net";
+
 import {IpFilterMode, IpFilterModuleOptions, IpOptions} from './interfaces';
 import { MODULE_OPTIONS_TOKEN } from './ip-filter.module-definition';
-import {IPVersion} from "net";
 
 @Injectable()
 export class IpFilterService {
   mode: IpFilterMode;
-  trustProxy: boolean;
+  trustProxy: boolean | string[];
 
   private _ip: IpOptions;
 
@@ -18,13 +19,6 @@ export class IpFilterService {
     this.trustProxy = options.trustProxy ?? false;
 
     this._ip = options.ip;
-  }
-
-  get ipVersion(): string {
-    return this._ip.version ?? 'ipv4';
-  }
-  set ipVersion(version: IPVersion) {
-    this._ip.version = version;
   }
 
   get ipList(): string[] {
@@ -41,10 +35,10 @@ export class IpFilterService {
     this._ip.range = [range.start, range.end];
   }
 
-  get ipPrefix(): number {
-    return this._ip.prefix;
+  get ipSubnet(): string[] {
+    return this._ip.subnet;
   }
-  set ipPrefix(prefix: number) {
-    this._ip.prefix = prefix;
+  set ipSubnet(subnet: string[]) {
+    this._ip.subnet = subnet;
   }
 }

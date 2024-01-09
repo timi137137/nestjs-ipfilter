@@ -1,13 +1,16 @@
+import {BlockList, isIP} from "node:net";
+
 import {
   CanActivate,
-  ExecutionContext,
+  ExecutionContext, ForbiddenException,
   Inject,
   Injectable,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { IpFilterService } from './ip-filter.service';
+
 import { IP_FILTER_ID } from './ip-filter.constants';
-import { IpFilterDenyException } from './ipfilter-deny.exception';
+import { IpFilterService } from './ip-filter.service';
+import { getIp } from "./utils";
 
 @Injectable()
 export class IpFilterGuard implements CanActivate {
@@ -20,34 +23,45 @@ export class IpFilterGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> | Observable<boolean> | boolean {
     const request = context.switchToHttp().getRequest();
-    const ipAddress: string = requestIp.getClientIp(request);
+    const clientIp: string = getIp(request, this.ipFilterService.options);
+    const blockList = new BlockList();
 
-    const whitelist = this.ipFilterService.;
-    const blacklist = this.ipFilterService.blacklist;
+    if (this.ipFilterService.ipList) {
+      this.ipFilterService.ipList.forEach((ip) => {
+        if (!isIP(ip)) {
+          throw TypeError(`ip ${ip} is not a valid IP address`);
+        }
 
-    let approved = false;
-
-    if (whitelist.length > 0) {
-      approved = whitelist.some((item) => {
-        return new RegExp(item).test(ipAddress);
+        blockList.addAddress(ip);
       });
     }
 
-    if (blacklist.length > 0) {
-      approved = !blacklist.some((item) => {
-        return new RegExp(item).test(ipAddress);
+    if (this.ipFilterService.ipRange) {
+      const range = this.ipFilterService.ipRange;
+      blockList.addRange(range[0], range[1]);
+    }
+
+    if (this.ipFilterService.ipSubnet) {
+      const subnetList = this.ipFilterService.ipSubnet;
+      subnetList.forEach((subnet) => {
+        if (!subnet.includes('/')) {
+          throw TypeError(`${subnet} is not a valid IP subnet address`);
+        }
+
+        const subnetSplit = subnet.split('/');
+        if (!isIP(subnetSplit[0]) && typeof subnetSplit[1] !== 'number') {
+          throw TypeError(`${subnetSplit[0]} is not a valid IP subnet address`);
+        }
+
+        blockList.addSubnet(subnetSplit[0], subnetSplit[1] as unknown as number);
       });
     }
 
-    if (!approved && this.ipFilterService.useDenyException) {
-      throw new IpFilterDenyException(
-        {
-          clientIp: ipAddress,
-          whitelist: whitelist,
-          blacklist: blacklist,
-        },
-        403,
-      );
+    const matching = blockList.check(clientIp);
+    const approved = this.ipFilterService.mode === 'allow' ? matching : !matching;
+
+    if(!approved) {
+      throw new ForbiddenException('Sorry, you have been blocked');
     }
 
     return approved;

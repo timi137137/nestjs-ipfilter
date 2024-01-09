@@ -11,9 +11,10 @@ export type IpFilterModuleOptions = {
    */
   ip: IpOptions;
   /**
-   * If your application runs behind a proxy server, check the specific HTTP adapter options (express and fastify) for the trust proxy option and enable it.
+   * If your application runs behind a proxy server, check the specific HTTP adapter options for the trust proxy option and enable it.\
+   * If-select array, only the incoming proxy server is trusted, otherwise it is rejected.
    */
-  trustProxy?: boolean;
+  trustProxy?: boolean | string[];
 }
 
 export type IpOptions = {
@@ -26,14 +27,10 @@ export type IpOptions = {
    */
   range?: string[];
   /**
-   * The number of CIDR prefix bits. For IPv4, this must be a value between 0 and 32. For IPv6, this must be between 0 and 128.
+   * List of subnets. The passed value must conform to the specification\
+   * Example 192.168.0.1/24
    */
-  prefix?: number;
-  /**
-   * "ipv4" | "ipv6"\
-   * Default: ipv4
-   */
-  version?: IPVersion;
+  subnet?: string[];
 }
 
 export type IpFilterMode = 'allow' | 'deny';
