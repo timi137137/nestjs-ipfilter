@@ -10,7 +10,10 @@
     "proxy",
     "module"
   ],
-  "repository": "https://github.com/timi137137/nestjs-ipfilter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timi137137/nestjs-ipfilter"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rimraf dist && tsc -p tsconfig.json",
