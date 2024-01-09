@@ -4,9 +4,9 @@
 
 <p align="center">IP filter module for Nest framework (node.js) 🌎</p>
 <p align="center">
-  <img src="https://img.shields.io/npm/v/timi137137/nestjs-ipfilter.svg" alt="NPM Version" />
-  <img src="https://img.shields.io/npm/l/timi137137/nestjs-ipfilter.svg" alt="Package License" />
-  <img src="https://img.shields.io/npm/dm/timi137137/nestjs-ipfilter.svg" alt="NPM Downloads" />
+  <img src="https://img.shields.io/npm/v/%40timi137%2Fnestjs-ipfilter.svg" alt="NPM Version" />
+  <img src="https://img.shields.io/npm/l/%40timi137%2Fnestjs-ipfilter.svg" alt="Package License" />
+  <img src="https://img.shields.io/npm/dm/%40timi137%2Fnestjs-ipfilter.svg" alt="NPM Downloads" />
 </p>
 
 ## Description
@@ -61,7 +61,7 @@ getHello(): string {
 
 ### Example Options
 
-```json lines
+```txt
 {
   mode: 'deny',
   trustProxy: true,
