@@ -1,4 +1,4 @@
-import { IPVersion } from "net";
+import { IPVersion } from 'net';
 
 export type IpFilterModuleOptions = {
   /**
@@ -15,7 +15,7 @@ export type IpFilterModuleOptions = {
    * If-select array, only the incoming proxy server is trusted, otherwise it is rejected.
    */
   trustProxy?: boolean | string[];
-}
+};
 
 export type IpOptions = {
   /**
@@ -31,6 +31,6 @@ export type IpOptions = {
    * Example 192.168.0.1/24
    */
   subnet?: string[];
-}
+};
 
 export type IpFilterMode = 'allow' | 'deny';

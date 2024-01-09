@@ -1,6 +1,6 @@
-import {isIP} from "node:net";
+import { isIP } from 'node:net';
 
-import {IpFilterModuleOptions} from "../interfaces";
+import { IpFilterModuleOptions } from '../interfaces';
 
 export function getIp(request: Request, options: IpFilterModuleOptions) {
   if (request.headers) {
@@ -49,13 +49,15 @@ export function getIp(request: Request, options: IpFilterModuleOptions) {
     if (isIP(request.headers['x-appengine-user-ip'])) {
       return request.headers['x-appengine-user-ip'];
     }
-
   }
 
   return null;
 }
 
-export function getIpFromXForwardedFor(header: string, trustProxy?: boolean | string[]) {
+export function getIpFromXForwardedFor(
+  header: string,
+  trustProxy?: boolean | string[],
+) {
   if (header == null) return null;
 
   // x-forwarded-for may return multiple IP addresses in the format:

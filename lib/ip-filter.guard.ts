@@ -1,8 +1,9 @@
-import {BlockList, isIP} from "node:net";
+import { BlockList, isIP } from 'node:net';
 
 import {
   CanActivate,
-  ExecutionContext, ForbiddenException,
+  ExecutionContext,
+  ForbiddenException,
   Inject,
   Injectable,
 } from '@nestjs/common';
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 
 import { IP_FILTER_ID } from './ip-filter.constants';
 import { IpFilterService } from './ip-filter.service';
-import { getIp } from "./utils";
+import { getIp } from './utils';
 
 @Injectable()
 export class IpFilterGuard implements CanActivate {
@@ -53,14 +54,18 @@ export class IpFilterGuard implements CanActivate {
           throw TypeError(`${subnetSplit[0]} is not a valid IP subnet address`);
         }
 
-        blockList.addSubnet(subnetSplit[0], subnetSplit[1] as unknown as number);
+        blockList.addSubnet(
+          subnetSplit[0],
+          subnetSplit[1] as unknown as number,
+        );
       });
     }
 
     const matching = blockList.check(clientIp);
-    const approved = this.ipFilterService.mode === 'allow' ? matching : !matching;
+    const approved =
+      this.ipFilterService.mode === 'allow' ? matching : !matching;
 
-    if(!approved) {
+    if (!approved) {
       throw new ForbiddenException('Sorry, you have been blocked');
     }
 

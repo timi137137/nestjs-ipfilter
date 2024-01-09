@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {IPVersion} from "net";
+import { IPVersion } from 'net';
 
-import {IpFilterMode, IpFilterModuleOptions, IpOptions} from './interfaces';
+import { IpFilterMode, IpFilterModuleOptions, IpOptions } from './interfaces';
 import { MODULE_OPTIONS_TOKEN } from './ip-filter.module-definition';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class IpFilterService {
   get ipRange(): string[] {
     return this._ip.range;
   }
-  set ipRange(range: { start: string, end: string }) {
+  set ipRange(range: { start: string; end: string }) {
     this._ip.range = [range.start, range.end];
   }
 
