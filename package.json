@@ -1,28 +1,30 @@
 {
   "name": "nestjs-ipfilter",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "IP filter module for Nest framework (node.js) 🌎",
   "author": "悠静 <i@mikuhl.cn>",
   "license": "MIT",
+  "keywords": [
+    "nestjs",
+    "ip filter",
+    "proxy",
+    "module"
+  ],
   "repository": "https://github.com/timi137137/nestjs-ipfilter",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "format": "prettier \"lib/**/*.ts\" --write",
-    "lint": "eslint 'lib/**/*.ts' --fix",
-    "prepublish:next": "npm run build",
-    "publish:next": "npm publish --access public --tag next",
-    "prepublish:npm": "npm run build",
+    "prebuild": "rimraf dist",
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "format": "prettier --write \"{lib,example}/**/*.ts\"",
+    "prepublish:npm": "npm run lint && npm run format && npm run build",
     "publish:npm": "npm publish --access public",
-    "prerelease": "npm run build",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:debug": "nest start --watch --debug"
-  },
-  "dependencies": {
-    "@nestjs/common": "^9.0.0 || ^10.0.0",
-    "@nestjs/core": "^9.0.0 || ^10.0.0"
+    "start:debug": "nest start --debug --watch",
+    "lint": "eslint \"{lib,apps,libs,test,example/src}/**/*.ts\" --fix"
   },
   "devDependencies": {
+    "@nestjs/common": "^9.0.0 || ^10.0.0",
+    "@nestjs/core": "^9.0.0 || ^10.0.0",
     "@nestjs/platform-express": "10.3.0",
     "@types/node": "20.10.7",
     "@typescript-eslint/eslint-plugin": "6.18.0",
@@ -33,7 +35,10 @@
     "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "prettier": "3.0.0",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "reflect-metadata": "0.1.13",
+    "rimraf": "3.0.2",
+    "rxjs": "7.5.6"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0 || ^10.0.0",
