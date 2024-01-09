@@ -69,12 +69,16 @@ export class IpFilterGuard implements CanActivate {
       });
     }
 
+    if (clientIp == null) {
+      return this.ipFilterService.mode === 'allow';
+    }
+
     const matching = blockList.check(clientIp);
     const approved =
       this.ipFilterService.mode === 'allow' ? matching : !matching;
 
     if (!approved) {
-      throw new ForbiddenException('Sorry, you have been blocked');
+      throw new ForbiddenException(undefined, 'Sorry, you have been blocked');
     }
 
     return approved;
