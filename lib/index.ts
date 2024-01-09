@@ -1,5 +1,6 @@
 export * from './interfaces';
 export * from './ip-filter.constants';
+export * from './ip-filter.decorators';
 export * from './ip-filter.guard';
 export * from './ip-filter.module-definition';
 export * from './ip-filter.service';

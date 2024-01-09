@@ -16,7 +16,8 @@
   "include": [
     "lib/**/*",
     "tests/**/*",
-    "e2e/**/*"
+    "e2e/**/*",
+    "../index.ts"
   ],
   "exclude": [
     "node_modules",
