@@ -7,6 +7,7 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 
 import { IP_FILTER_ID } from './ip-filter.constants';
@@ -18,6 +19,7 @@ export class IpFilterGuard implements CanActivate {
   constructor(
     @Inject(IP_FILTER_ID)
     private readonly ipFilterService: IpFilterService,
+    private readonly reflector: Reflector,
   ) {}
 
   canActivate(
@@ -25,6 +27,14 @@ export class IpFilterGuard implements CanActivate {
   ): Promise<boolean> | Observable<boolean> | boolean {
     const request = context.switchToHttp().getRequest();
     const clientIp: string = getIp(request, this.ipFilterService.options);
+    // get guard
+    const guard = this.reflector.get<boolean>('ipFilter', context.getHandler());
+
+    // if set guard to false, then skip ip filter
+    if (guard === false) {
+      return true;
+    }
+
     const blockList = new BlockList();
 
     if (this.ipFilterService.ipList) {
@@ -36,12 +46,10 @@ export class IpFilterGuard implements CanActivate {
         blockList.addAddress(ip);
       });
     }
-
     if (this.ipFilterService.ipRange) {
       const range = this.ipFilterService.ipRange;
       blockList.addRange(range[0], range[1]);
     }
-
     if (this.ipFilterService.ipSubnet) {
       const subnetList = this.ipFilterService.ipSubnet;
       subnetList.forEach((subnet) => {
