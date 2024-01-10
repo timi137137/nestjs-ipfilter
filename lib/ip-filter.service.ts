@@ -8,17 +8,28 @@ import { MODULE_OPTIONS_TOKEN } from './ip-filter.module-definition';
 export class IpFilterService {
   mode: IpFilterMode;
   trustProxy: boolean | string[];
+  isGlobal: boolean;
 
   private _ip: IpOptions;
 
   constructor(
     @Inject(MODULE_OPTIONS_TOKEN)
-    readonly options: IpFilterModuleOptions,
+    private readonly _options: IpFilterModuleOptions,
   ) {
-    this.mode = options.mode ?? 'deny';
-    this.trustProxy = options.trustProxy ?? false;
+    this.mode = _options.mode ?? 'deny';
+    this.trustProxy = _options.trustProxy ?? false;
+    this.isGlobal = _options.isGlobal ?? false;
 
-    this._ip = options.ip;
+    this._ip = _options.ip;
+  }
+
+  get options(): IpFilterModuleOptions {
+    return {
+      mode: this.mode,
+      trustProxy: this.trustProxy,
+      isGlobal: this.isGlobal,
+      ip: this._ip,
+    };
   }
 
   get ipList(): string[] {

@@ -29,6 +29,7 @@ First register the filter in `app.module.ts`, The sample code shows the IP addre
 
 ```typescript
 IpFilterModule.register({
+  isGlobal: true,
   mode: 'deny',
   trustProxy: true,
   ip: {
@@ -53,6 +54,7 @@ getHello(): string {
 
 | Name       | Type                | Default   | Description                                                          |
 |------------|---------------------|-----------|----------------------------------------------------------------------|
+| isGlobal   | boolean             | false     | enabling this option will filter all routes                          |
 | mode       | string              | deny      | deny or allow                                                        |
 | trustProxy | boolean or string[] | false     | trust proxy headers                                                  |
 | ip.list    | string[]            | undefined | list of IPs                                                          |
@@ -63,6 +65,7 @@ getHello(): string {
 
 ```txt
 {
+  isGlobal: true,
   mode: 'deny',
   trustProxy: true,
   ip: {

@@ -15,6 +15,11 @@ export type IpFilterModuleOptions = {
    * If-select array, only the incoming proxy server is trusted, otherwise it is rejected.
    */
   trustProxy?: boolean | string[];
+  /**
+   * Enabling this option will filter all routes\
+   * Default: false
+   */
+  isGlobal?: boolean;
 };
 
 export type IpOptions = {

@@ -25,16 +25,20 @@ export class IpFilterGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): Promise<boolean> | Observable<boolean> | boolean {
-    const request = context.switchToHttp().getRequest();
-    const clientIp: string = getIp(request, this.ipFilterService.options);
     // get guard
     const guard = this.reflector.get<boolean>('ipFilter', context.getHandler());
 
+    // if not global and guard is not defined, then skip ip filter
+    if (!this.ipFilterService.isGlobal && guard === undefined) {
+      return true;
+    }
     // if set guard to false, then skip ip filter
     if (guard === false) {
       return true;
     }
 
+    const request = context.switchToHttp().getRequest();
+    const clientIp: string = getIp(request, this.ipFilterService.options);
     const blockList = new BlockList();
 
     if (this.ipFilterService.ipList) {
