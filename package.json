@@ -1,6 +1,6 @@
 {
   "name": "@timi137/nestjs-ipfilter",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "IP filter module for Nest framework (node.js) 🌎",
   "author": "悠静 <i@mikuhl.cn>",
   "license": "MIT",
