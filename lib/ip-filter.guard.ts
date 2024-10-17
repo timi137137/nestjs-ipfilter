@@ -26,7 +26,7 @@ export class IpFilterGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> | Observable<boolean> | boolean {
     // get guard
-    const guard = this.reflector.get<boolean>('ipFilter', context.getHandler());
+    const guard = this.reflector.getAllAndOverride<boolean>('ipFilter', [context.getHandler(), context.getClass()]);
 
     // if not global and guard is not defined, then skip ip filter
     if (!this.ipFilterService.isGlobal && guard === undefined) {
